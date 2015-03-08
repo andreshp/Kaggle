@@ -6,7 +6,7 @@ Solution to some public data sets in [Kaggle Platform](http://www.kaggle.com/).
 [![](https://img.shields.io/badge/language-R-red.svg)](http://www.kaggle.com/)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
-## Digit Recognizer
+## [Digit Recognizer](http://www.kaggle.com/c/digit-recognizer)
 
 Classify handwritten digits using the famous MNIST data.
 
