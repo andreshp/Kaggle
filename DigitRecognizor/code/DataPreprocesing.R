@@ -12,7 +12,6 @@ test <-  read.csv(paste(working_directory, "/csv/test.csv", sep=""),  header=TRU
 
 labels <- as.numeric(train[,1])
 train <- train[,-1]
-train <- data.frame(lapply(1:ncol(train), function(j) as.numeric(train[,j])))
 nrow_image <- 28 # Images' pixels per row
 
 #--------------------------- FUNCTIONS  ----------------------------#
@@ -76,7 +75,7 @@ reduceCols <- function(im, r){
 # Return:
 #    The image whitout rows with mean less than ratio.
 deleteBlancRows <- function(im, ratio){
-    blanc_rows <- sapply(1:nrow(im), function(i) mean(im[i,]) > ratio)    
+    blanc_rows <- sapply(1:nrow(im), function(i) mean(unlist(im[i,])) > 0)    
     im[blanc_rows,]    
 }
 
@@ -87,21 +86,68 @@ deleteBlancRows <- function(im, ratio){
 # Return:
 #    The image whitout colums with mean less than ratio.
 deleteBlancCols <- function(im, ratio){
-    blanc_cols <- sapply(1:ncol(image), function(j) mean(image[,j]) > 0)    
+    blanc_cols <- sapply(1:ncol(image), function(j) mean(unlist(image[,j])) > 0)    
     im[,blanc_cols]    
 }
 
 #------------------- APPLICATION TO THE DATASET  -----------------------#
 
-images <- c()
+# Remove the blanc rows and columns from each train image
+images_train <- vector(mode="list", length=nrow(train))
 for (i in 1:nrow(train)) {
-    image <- matrix(train[1,], nrow = nrow_image)
-    message(image)
+    image <- matrix(train[i,], nrow = nrow_image)
     image <- deleteBlancCols(image, 0)
     image <- deleteBlancRows(image, 0)
-    images <- rbind(images, c(image))
-    if ( i %% 10 == 0) {
-        message("Completed:")
-        break
+    images_train[[i]] <- image
+    if ( i %% 1000 == 0) {
+        message("Completed: ", 100*i/nrow(train))
     }
 }
+
+# Remove the blanc rows and columns from each test image
+images_test <- vector(mode="list", length=nrow(test))
+for (i in 1:nrow(test)) {
+    image <- matrix(test[i,], nrow = nrow_image)
+    image <- deleteBlancCols(image, 0)
+    image <- deleteBlancRows(image, 0)
+    images_test[[i]] <- image
+    if ( i %% 1000 == 0) {
+        message("Completed: ", 100*i/nrow(test))
+    }
+}
+
+# Get the maximum number of rows and columns:
+max_row = max(c(max(sapply(images, nrow)), max(sapply(images_test, nrow))))
+max_col = max(c(max(sapply(images, ncol)), max(sapply(images_test, ncol))))
+
+# Resize each train image to max_row x max_col
+for (i in 1:nrow(train)) {
+    c_nrow <- nrow(images_train[[i]])
+    c_ncol <- ncol(images_train[[i]])
+    images_train[[i]] <- reduceCols(zoomCols(images_train[[i]],max_row),c_nrow)
+    images_train[[i]] <- reduceRows(zoomRows(images_train[[i]],max_col),c_ncol)    
+    if ( i %% 1000 == 0) {
+        message("Completed: ", 100*i/nrow(train))
+    }
+}
+
+# Resize each test image to max_row x max_col
+for (i in 1:nrow(test)) {
+    c_nrow <- nrow(images_test[[i]])
+    c_ncol <- ncol(images_test[[i]])
+    images_test[[i]] <- reduceCols(zoomCols(images_test[[i]],max_row),c_nrow)
+    images_test[[i]] <- reduceRows(zoomRows(images_test[[i]],max_col),c_ncol)    
+    if ( i %% 1000 == 0) {
+        message("Completed: ", 100*i/nrow(test))
+    }
+}
+
+# Build the new data frames
+new_train <- data.frame(matrix(unlist(images_train), ncol=max_col*max_row))
+new_train <- cbind(labels, new_train)
+new_test  <- data.frame(matrix(unlist(images_test), ncol=max_col*max_row))
+
+# Write the data frames
+write.csv(new_train_1, file = paste(working_directory, "/csv/train_preprocesed.csv", sep=""), row.names = FALSE)
+write.csv(new_test, file = paste(working_directory, "/csv/test_preprocesed.csv", sep=""), row.names = FALSE)
+
