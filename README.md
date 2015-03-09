@@ -1,4 +1,4 @@
-# Kaggle
+    # Kaggle
 
 Solution to some public data sets in [Kaggle Platform](http://www.kaggle.com/).
 
@@ -9,6 +9,8 @@ Solution to some public data sets in [Kaggle Platform](http://www.kaggle.com/).
 ## [Digit Recognizer](http://www.kaggle.com/c/digit-recognizer)
 
 Classify handwritten digits using the famous MNIST data.
+
+- **Current Score** : [0.97557](http://www.kaggle.com/users/231200/andreshp)
 
 The following picture shows the mean of the handwritten pictures for each digit.
 
