@@ -7,8 +7,8 @@
 #--------------------------- GETTING THE DATA ----------------------------#
 
 working_directory <- "/home/andreshp/ComputerScience/MachineLearning/Kaggle/DigitRecognizer/R"
-train <- read.csv(paste(working_directory, "/csv/train.csv", sep=""), header=TRUE)
-test <-  read.csv(paste(working_directory, "/csv/test.csv", sep=""),  header=TRUE)
+train <- read.csv(paste(working_directory, "/csv/train_preprocesed.csv", sep=""), header=TRUE)
+test <-  read.csv(paste(working_directory, "/csv/test_preprocesed.csv", sep=""),  header=TRUE)
 
 labels <- train[,1]
 train <- train[,-1]
@@ -26,4 +26,4 @@ results <- (0:9)[knn(train, test, labels, k = 1, algorithm="cover_tree")]
 
 #------------------------- WRITE THE PREDICTION -------------------------#
 
-write.csv(data.frame(ImageId = 1:length(results), Label = results), file = paste(working_directory, "/Results/knn2.csv", sep=""), row.names = FALSE)
+write.csv(data.frame(ImageId = 1:length(results), Label = results), file = paste(working_directory, "/Results/knn1_procesed.csv", sep=""), row.names = FALSE)

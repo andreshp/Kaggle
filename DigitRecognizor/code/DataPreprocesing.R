@@ -117,8 +117,8 @@ for (i in 1:nrow(test)) {
 }
 
 # Get the maximum number of rows and columns:
-max_row = max(c(max(sapply(images, nrow)), max(sapply(images_test, nrow))))
-max_col = max(c(max(sapply(images, ncol)), max(sapply(images_test, ncol))))
+max_row = max(c(max(sapply(images_train, nrow)), max(sapply(images_test, nrow))))
+max_col = max(c(max(sapply(images_train, ncol)), max(sapply(images_test, ncol))))
 
 # Resize each train image to max_row x max_col
 for (i in 1:nrow(train)) {
@@ -143,11 +143,27 @@ for (i in 1:nrow(test)) {
 }
 
 # Build the new data frames
-new_train <- data.frame(matrix(unlist(images_train), ncol=max_col*max_row))
+new_train_1 <- lapply(1:length(images_train), function(i) as.vector(images_train[[i]]))
+new_train <- data.frame( matrix(rep(NA, nrow(train)*max_row*max_col), nrow=nrow(train), ncol=max_row*max_col) )
+for (i in 1:nrow(train)){
+    new_train[i,] <- new_train_1[[i]]   
+    if ( i %% 1000 == 0) {
+        message("Completed: ", 100*i/nrow(train))
+    }
+}
+
+new_test_1 <- lapply(1:length(images_test), function(i) as.vector(images_test[[i]]))
+new_test <- data.frame( matrix(rep(NA, nrow(test)*max_row*max_col), nrow=nrow(test), ncol=max_row*max_col) )
+for (i in 1:nrow(test)){
+    new_test[i,] <- new_test_1[[i]]   
+    if ( i %% 1000 == 0) {
+        message("Completed: ", 100*i/nrow(test))
+    }
+}
+
 new_train <- cbind(labels, new_train)
-new_test  <- data.frame(matrix(unlist(images_test), ncol=max_col*max_row))
 
 # Write the data frames
-write.csv(new_train_1, file = paste(working_directory, "/csv/train_preprocesed.csv", sep=""), row.names = FALSE)
+write.csv(new_train, file = paste(working_directory, "/csv/train_preprocesed.csv", sep=""), row.names = FALSE)
 write.csv(new_test, file = paste(working_directory, "/csv/test_preprocesed.csv", sep=""), row.names = FALSE)
 

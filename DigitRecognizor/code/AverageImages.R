@@ -8,12 +8,12 @@
 #----------------------------- GET THE DATA ------------------------------#
 
 working_directory <- "/home/andreshp/ComputerScience/MachineLearning/Kaggle/DigitRecognizer/R"
-train <- read.csv(paste(working_directory, "/csv/new_train.csv", sep=""), header=TRUE)
-test <-  read.csv(paste(working_directory, "/csv/test.csv", sep=""),  header=TRUE)
+train <- read.csv(paste(working_directory, "/csv/train_preprocesed.csv", sep=""), header=TRUE)
+test <-  read.csv(paste(working_directory, "/csv/test_preprocesed.csv", sep=""),  header=TRUE)
 
 labels <- as.numeric(train[,1])
 train <- train[,-1]
-nrow_image <- 28 # Images' pixels per row
+nrow_image <- 20 # Images' pixels per row
 
 #----------------------------- GET THE IMAGE ------------------------------#
 

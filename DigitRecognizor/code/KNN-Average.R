@@ -7,8 +7,8 @@
 #----------------------------- GET THE DATA ------------------------------#
 
 working_directory <- "/home/andreshp/ComputerScience/MachineLearning/Kaggle/DigitRecognizer/R"
-train <- read.csv(paste(working_directory, "/csv/train.csv", sep=""), header=TRUE)
-test <-  read.csv(paste(working_directory, "/csv/test.csv", sep=""),  header=TRUE)
+train <- read.csv(paste(working_directory, "/csv/train_preprocesed.csv", sep=""), header=TRUE)
+test <-  read.csv(paste(working_directory, "/csv/test_preprocesed.csv", sep=""),  header=TRUE)
 
 labels <- as.numeric(train[,1])
 train <- train[,-1]
@@ -24,6 +24,8 @@ for(x in 0:9){
 
 #----------------------- TRY ON TRAINING DATA -----------------------#
 
+library(FNN)
+
 # AverageKNN
 results <- (0:9)[knn(images, train, 0:9, k = 1, algorithm="cover_tree")]
 
@@ -35,8 +37,6 @@ new_train <- train[results == labels,]
 write.csv(data.frame(Labels = labels[results==labels], new_train), file = paste(working_directory, "/csv/new_train6.csv", sep=""), row.names = FALSE)
 
 #----------------------- BUILD THE KNN PREDICTION -----------------------#
-
-library(FNN)
 
 # AverageKNN
 results <- (0:9)[knn(images, train, 0:9, k = 1, algorithm="cover_tree")]
