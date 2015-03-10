@@ -7,16 +7,16 @@
 #-------------------------- GETTING DATA ---------------------------#
 
 working_directory <- "/home/andreshp/ComputerScience/MachineLearning/Kaggle/DigitRecognizer/R"
-train <- read.csv(paste(working_directory, "/csv/train.csv", sep=""), header=TRUE)
-test <-  read.csv(paste(working_directory, "/csv/test.csv", sep=""),  header=TRUE)
+train <- read.csv(paste(working_directory, "/csv/train_preprocesed.csv", sep=""), header=TRUE)
+test <-  read.csv(paste(working_directory, "/csv/test_preprocesed.csv", sep=""),  header=TRUE)
 
 #----------------------- STARTING H2O LIBRARY -----------------------#
 
 # Library h2o for deep learning
 library(h2o)
 
-# Start a local cluster with 2GB RAM
-localH2O = h2o.init(ip = "localhost", port = 54321, startH2O = TRUE, Xmx = '2g')
+# Start a local cluster with 4GB RAM
+localH2O = h2o.init(ip = "localhost", port = 54321, startH2O = TRUE, Xmx = '4g')
 
 # Convert the data to the h2o format:
 train_h2o <- as.h2o(localH2O, train)
@@ -26,7 +26,7 @@ test_h2o  <- as.h2o(localH2O, test)
 #----------------------- TRAINING THE MODEL -----------------------#
 
 # Model 1: (About 79.5% in Kaggle :( )
-model <- h2o.deeplearning( x = 2:785,                              # column numbers for predictors
+model <- h2o.deeplearning( x = 2:ncol(train),                              # column numbers for predictors
                            y = 1,                                  # column number for label
                            data = train_h2o,                       # data in H2O format
                            activation = "TanhWithDropout",         # Tanh With Dropout
@@ -37,7 +37,7 @@ model <- h2o.deeplearning( x = 2:785,                              # column numb
                            epochs = 100)                           # max. no. of epochs
 
 # Model 2: 
-model <- h2o.deeplearning( x = 2:785,                              # column numbers for predictors
+model <- h2o.deeplearning( x = 2:ncol(train),                              # column numbers for predictors
                            y = 1,                                  # column number for label
                            data = train_h2o,                       # data in H2O format
                            activation = "Tanh",                    # Tanh
@@ -48,7 +48,7 @@ model <- h2o.deeplearning( x = 2:785,                              # column numb
                            rate_annealing = 0.001)                 # annealing rate
 
 # Model 3:
-model <- h2o.deeplearning( x = 2:785,                              # column numbers for predictors
+model <- h2o.deeplearning( x = 2:ncol(train),                              # column numbers for predictors
                            y = 1,                                  # column number for label
                            data = train_h2o,                       # data in H2O format
                            activation = "RectifierWithDropout",    # Rectifier With Dropout

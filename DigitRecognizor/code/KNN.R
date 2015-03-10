@@ -21,7 +21,7 @@ library(FNN)
 results <- (0:9)[knn(train, test, labels, k = 10, algorithm="cover_tree")]
 
 
-# KNN with k = 1. (0.97114 in Kaggle)
+# KNN with k = 1. (0.97114 in Kaggle, 0.9755 with data preprocesing)
 results <- (0:9)[knn(train, test, labels, k = 1, algorithm="cover_tree")]
 
 #------------------------- WRITE THE PREDICTION -------------------------#
