@@ -47,8 +47,8 @@ model <- h2o.deeplearning( x = 2:ncol(train),                              # col
                            rate=0.01,                              # rate
                            rate_annealing = 0.001)                 # annealing rate
 
-# Model 3:
-model <- h2o.deeplearning( x = 2:ncol(train),                              # column numbers for predictors
+# Model 3 : (+ Data Preprocesing = 0.98714 in Kaggle)
+model <- h2o.deeplearning( x = 2:ncol(train),                      # column numbers for predictors
                            y = 1,                                  # column number for label
                            data = train_h2o,                       # data in H2O format
                            activation = "RectifierWithDropout",    # Rectifier With Dropout
@@ -74,6 +74,11 @@ model <- h2o.deeplearning( x = 2:ncol(train),                              # col
                            ignore_const_cols = T,
                           force_load_balance = T)
 
+# Model 4 : (+ Data Preprocesing = 0.98657)
+model <- h2o.deeplearning(x = 2:ncol(train), y = 1, data = train_h2o,
+                          activation = "RectifierWithDropout", hidden = c(1024,1024,2048),
+                          epochs = 800, l1 = 1e-5, input_dropout_ratio = 0.2,
+                          train_samples_per_iteration = -1)
 
 # Use the DNN model for predictions
 h2o_test_results <- h2o.predict(model, test_h2o)
@@ -82,4 +87,4 @@ h2o_test_results <- h2o.predict(model, test_h2o)
 df_test_results <- as.data.frame(h2o_test_results)
 
 # Build the results
-write.csv(data.frame(ImageId=1:nrow(df_test_results), Label=df_test_results$predict), file = paste(working_directory, "/Results/DeepLearning1.csv", sep=""), row.names = FALSE)
+write.csv(data.frame(ImageId=1:nrow(df_test_results), Label=df_test_results$predict), file = paste(working_directory, "/Results/DeepLearning_Preprocesed4.csv", sep=""), row.names = FALSE)

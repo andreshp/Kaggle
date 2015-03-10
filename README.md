@@ -10,10 +10,14 @@ Solution to some public data sets in [Kaggle Platform](http://www.kaggle.com/).
 
 Classify handwritten digits using the famous MNIST data.
 
-- **Current Score** : [0.98714](http://www.kaggle.com/users/231200/andreshp).  Data preprocesing + Deep Learning.
+- **Current Score** : [0.98714](http://www.kaggle.com/users/231200/andreshp).  Data preprocessing + Deep Learning.
 
-- **Other Score** : [0.97557](http://www.kaggle.com/users/231200/andreshp). KNN plus data preprocesing.
+- **Other Algorithms** : [0.97557](http://www.kaggle.com/users/231200/andreshp). Data Preprocessing + KNN with k = 1.
 
 The following picture shows the mean of the handwritten pictures for each digit.
 
 ![](https://github.com/andreshp/Kaggle/blob/master/DigitRecognizor/images/averages.png)
+
+The final picture shows the mean of the handwritten pictures once they were preprocesed.
+
+![](https://github.com/andreshp/Kaggle/blob/master/DigitRecognizor/images/averages_preprocessed.png)
