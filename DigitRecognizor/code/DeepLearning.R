@@ -47,7 +47,8 @@ model <- h2o.deeplearning( x = 2:ncol(train),                              # col
                            rate=0.01,                              # rate
                            rate_annealing = 0.001)                 # annealing rate
 
-# Model 3 : (+ Data Preprocesing = 0.98714 in Kaggle)
+# Model 3 : (0.98229 in Kaggle), (+ Data Preprocesing = 0.98714 in Kaggle)
+set.seed(28)
 model <- h2o.deeplearning( x = 2:ncol(train),                      # column numbers for predictors
                            y = 1,                                  # column number for label
                            data = train_h2o,                       # data in H2O format
@@ -60,7 +61,7 @@ model <- h2o.deeplearning( x = 2:ncol(train),                      # column numb
                            rate_annealing = 1.0e-6,                # annealing rate
                            rate_decay = 1.0,
                            momentum_start = 0.5, 
-                           momentum_ramp = 32000*12, 
+                           momentum_ramp = 42000*12, 
                            momentum_stable = 0.99, 
                            input_dropout_ratio = 0.2,
                            l1 = 1.0e-5, l2 = 0.0,
@@ -87,4 +88,4 @@ h2o_test_results <- h2o.predict(model, test_h2o)
 df_test_results <- as.data.frame(h2o_test_results)
 
 # Build the results
-write.csv(data.frame(ImageId=1:nrow(df_test_results), Label=df_test_results$predict), file = paste(working_directory, "/Results/DeepLearning_Preprocesed4.csv", sep=""), row.names = FALSE)
+write.csv(data.frame(ImageId=1:nrow(df_test_results), Label=df_test_results$predict), file = paste(working_directory, "/Results/DeepLearning_Preprocessed_4.csv", sep=""), row.names = FALSE)

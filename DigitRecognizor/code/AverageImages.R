@@ -15,24 +15,38 @@ labels <- as.numeric(train[,1])
 train <- train[,-1]
 nrow_image <- 20 # Images' pixels per row
 
+#--------------------------- FUNCTIONS  ----------------------------#
+
+# zoomRows: A function to increase the size of the image rows per the zoom factor r. 
+# Parameters:
+#    - im : Image to resize.
+#    - r  : Factor to resize each row.
+# Return:
+#    The image where each pixel has become r equal pixels in the row.
+zoomRows <- function(im, r){
+    # sapply will return a matrix where for each row indexed by i it is asigned 
+    # unlist(lapply(im[i,], function(x) rep(x, r) ), that is, the vector im[i,]
+    # with every element repeted r times.
+    t(sapply(1:nrow(im), function(i) unlist(lapply(im[i,], function(x) rep(x, r) )) ))
+}
+
+# zoomCols: A function to increase the size of the image cols per the zoom factor r. 
+# Parameters:
+#    - im : Image to resize
+#    - r  : Factor to resize each colum.
+# Return:
+#    The image where each pixel has become r equal pixels in the column.
+zoomCols <- function(im, r){
+    # sapply will return a matrix where for each column indexed by j it is asigned 
+    # unlist(lapply(im[,j], function(x) rep(x, r) ), that is, the vector im[,j]
+    # with every element repeted r times.
+    sapply(1:ncol(im), function(j) unlist(lapply(im[,j], function(x) rep(x, r) )) )
+}
+
+
 #----------------------------- GET THE IMAGE ------------------------------#
 
 library(png)
-
-# A function to increase the size of the image per the zoom factor r
-bigify <- function(im, r){
-    result <- matrix(nrow=nrow(im)*r, ncol=ncol(im)*r)
-    for(i in 1:nrow(im)){
-        for(j in 1:ncol(im)){
-            for(k in 1:r){
-                for(l in 1:r){
-                    result[(i - 1) * r + (k - 1) + 1, (j - 1) * r + (l - 1) + 1] <- im[i, j]
-                }
-            }
-        }
-    }
-    return(result)
-}
 
 # Find the mean of each class of numbers:
 images <- list()
@@ -40,7 +54,8 @@ zoom_ratio <- 4
 for(x in 0:9){
     average <- colMeans(train[labels == x,])
     im <- t(matrix(1 - average/256, nrow = nrow_image))
-    im <- bigify(im, zoom_ratio)
+    im <- zoomCols(im, zoom_ratio)
+    im <- zoomRows(im, zoom_ratio)
     images[[as.character(x)]] <- im
 }
 
