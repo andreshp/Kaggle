@@ -16,8 +16,8 @@ Classify handwritten digits using the famous MNIST data.
 
 The following picture shows the mean of the handwritten pictures for each digit.
 
-![](https://github.com/andreshp/Kaggle/blob/master/DigitRecognizor/images/averages.png)
+![](https://github.com/andreshp/Kaggle/blob/master/DigitRecognizer/images/averages.png)
 
 The final picture shows the mean of the handwritten pictures once they were preprocesed.
 
-![](https://github.com/andreshp/Kaggle/blob/master/DigitRecognizor/images/averages_preprocessed.png)
+![](https://github.com/andreshp/Kaggle/blob/master/DigitRecognizer/images/averages_preprocessed.png)
