@@ -27,13 +27,10 @@ testset <- subset(train.data, train.sector %in% c(1))
 testlabels <- subset(labels, train.sector %in% c(1))
 
 # KNN
-k_min <- 1
-k_max <- 100
+#k_min <- 1
+#k_max <- 100
 
-results <- list()
-for (i in k_min:k_max){
-    results[i] <- (0:9)[knn(trainingset, testset, trainlabels, k = 1, algorithm="cover_tree")]    
-}
+results <- (0:9)[knn(trainingset, testset, trainlabels, k = 10, algorithm="cover_tree")]    
 
 # Results
 message("Success Percent:")
@@ -42,8 +39,5 @@ message("Success Percent per Number:")
 a <- table(testlabels)
 b <- table(testlabels[results == testlabels])
 print(b / a * 100)
-
-
-#------------------------- WRITE THE PREDICTION -------------------------#
-
-write.csv(data.frame(ImageId = 1:length(results), Label = results), file = paste(working_directory, "/Results/knn1_row.csv", sep=""), row.names = FALSE)
+message("Confusion Matrix:")
+print(table(Predictions = results, TrueLabels = testlabels))

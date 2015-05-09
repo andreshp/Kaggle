@@ -98,7 +98,7 @@ deleteWhiteCols <- function(im, ratio = 0){
 #    The image regularized.
 regularize <- function(im){
     max_value <- max(unlist(im))
-    im <- t(sapply(1:nrow(im), function(i) unlist(im[i,]) * (255.0 / max_value)))
+    im <- t(sapply(1:nrow(im), function(i) unlist(im[i,]) / max_value))
     im    
 }
 
